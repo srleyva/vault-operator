@@ -4,4 +4,11 @@ metadata:
   name: "consul"
 spec:
   server:
-    size: 3
+    size: 5
+---
+apiVersion: "vault.sleyva.com/v1alpha1"
+kind: "Vault"
+metadata:
+  name: "vault"
+spec:
+  size: 3

@@ -22,14 +22,16 @@ func main() {
 	printVersion()
 
 	resource := "vault.sleyva.com/v1alpha1"
-	kind := "Consul"
+	kinds := []string{"Consul", "Vault"}
 	namespace, err := k8sutil.GetWatchNamespace()
 	if err != nil {
 		logrus.Fatalf("Failed to get watch namespace: %v", err)
 	}
 	resyncPeriod := 5
-	logrus.Infof("Watching %s, %s, %s, %d", resource, kind, namespace, resyncPeriod)
-	sdk.Watch(resource, kind, namespace, resyncPeriod)
+	for _, kind := range kinds{
+		logrus.Infof("Watching %s, %s, %s, %d", resource, kind, namespace, resyncPeriod)
+		sdk.Watch(resource, kind, namespace, resyncPeriod)
+	}
 	sdk.Handle(stub.NewHandler())
 	sdk.Run(context.TODO())
 }
