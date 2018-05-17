@@ -1,0 +1,3 @@
+apiVersion: vault.sleyva.com/v1alpha1
+kind: Consul
+projectName: vault-operator

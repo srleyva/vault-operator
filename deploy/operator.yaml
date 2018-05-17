@@ -1,0 +1,25 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: vault-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: vault-operator
+  template:
+    metadata:
+      labels:
+        name: vault-operator
+    spec:
+      containers:
+        - name: vault-operator
+          image: sleyva97/consul-operator:v0.0.1
+          command:
+          - vault-operator
+          imagePullPolicy: Always
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace

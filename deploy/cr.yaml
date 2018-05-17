@@ -1,0 +1,7 @@
+apiVersion: "vault.sleyva.com/v1alpha1"
+kind: "Consul"
+metadata:
+  name: "consul"
+spec:
+  server:
+    size: 3
