@@ -125,6 +125,7 @@ func newConsulServerDeployment(c *v1alpha1.Consul, bootstrap bool) *appsv1.Deplo
 	command := []string{"consul", "agent", "-server", "-data-dir", "/tmp/consul", "-retry-join", "consul-bootstrap:8301"}
 	name := c.Name + "-server"
 	ls := labelsForConsul("server")
+	grace := int64(60)
 	if bootstrap {
 		replicas = 1
 		command = []string{"consul", "agent", "-server", "-bootstrap-expect", "1", "-data-dir", "/tmp/consul", "-client", "0.0.0.0"}
@@ -148,9 +149,16 @@ func newConsulServerDeployment(c *v1alpha1.Consul, bootstrap bool) *appsv1.Deplo
 			Template: v1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{Labels: ls},
 				Spec: v1.PodSpec{
+					TerminationGracePeriodSeconds: &grace,
 					Containers: []v1.Container{{
 						Image:   "consul:1.1.0",
 						Name:    "consul-server",
+						Env: []v1.EnvVar{
+							{
+								Name: "CONSUL_LOCAL_CONFIG",
+								Value: "{\"leave_on_terminate\": true}",
+							},
+						},
 						Command: command,
 						Ports: []v1.ContainerPort{
 							{ContainerPort: 8500, Name: "consul"},
@@ -223,6 +231,12 @@ func newConsulClientDeployment(cr *v1alpha1.Consul) *appsv1.Deployment {
 					Containers: []v1.Container{{
 						Image:   "consul:1.1.0",
 						Name:    "consul-client",
+						Env: []v1.EnvVar{
+							{
+								Name: "CONSUL_LOCAL_CONFIG",
+								Value: "{\"leave_on_terminate\": true}",
+							},
+						},
 						Command: []string{"consul", "agent", "-data-dir", "/tmp/consul", "-retry-join", "consul-server:8301"},
 						Ports: []v1.ContainerPort{{
 							ContainerPort: 8500,
