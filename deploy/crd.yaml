@@ -1,3 +1,4 @@
+---
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
@@ -9,5 +10,19 @@ spec:
     listKind: ConsulList
     plural: consuls
     singular: consul
+  scope: Namespaced
+  version: v1alpha1
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: vaults.vault.sleyva.com
+spec:
+  group: vault.sleyva.com
+  names:
+    kind: Vault
+    listKind: VaultList
+    plural: vaults
+    singular: vault
   scope: Namespaced
   version: v1alpha1

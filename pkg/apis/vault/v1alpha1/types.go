@@ -26,10 +26,36 @@ type ConsulSpec struct {
 	Client ClusterSpec `json:"client"`
 }
 
+type ConsulStatus struct {
+	Nodes []string `json:"nodes"`
+}
+
 type ClusterSpec struct {
 	Size int32 `json:"size"`
 }
 
-type ConsulStatus struct {
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+type VaultList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata"`
+	Items           []Vault `json:"items"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+type Vault struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata"`
+	Spec              VaultSpec   `json:"spec"`
+	Status            VaultStatus `json:"status,omitempty"`
+}
+
+type VaultSpec struct {
+	Size int32 `json:"size"`
+}
+
+type VaultStatus struct {
 	Nodes []string `json:"nodes"`
 }
+
