@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vault-operator
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: vault-operator
-          image: sleyva97/consul-operator:v0.0.1
+          image: sleyva97/vault-operator:v0.0.2
           command:
           - vault-operator
           imagePullPolicy: Always
