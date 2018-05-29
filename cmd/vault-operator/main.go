@@ -28,7 +28,7 @@ func main() {
 		logrus.Fatalf("Failed to get watch namespace: %v", err)
 	}
 	resyncPeriod := 5
-	for _, kind := range kinds{
+	for _, kind := range kinds {
 		logrus.Infof("Watching %s, %s, %s, %d", resource, kind, namespace, resyncPeriod)
 		sdk.Watch(resource, kind, namespace, resyncPeriod)
 	}

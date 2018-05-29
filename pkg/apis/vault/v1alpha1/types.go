@@ -58,4 +58,3 @@ type VaultSpec struct {
 type VaultStatus struct {
 	Nodes []string `json:"nodes"`
 }
-
